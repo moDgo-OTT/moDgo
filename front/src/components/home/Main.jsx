@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import { message } from "antd";
-import styled from "styled-components";
-import { customMedia } from "../../GlobalStyles";
-import ImageSlider from "./ImageSlider";
-import MainClubCard from "./MainClubCard";
-import Button from "../common/Button.jsx";
-import Spin from "../common/Spin.jsx";
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { message } from 'antd';
+import styled from 'styled-components';
+import { customMedia } from '../../GlobalStyles';
+import ImageSlider from './ImageSlider';
+import MainClubCard from './MainClubCard';
+import Button from '../common/Button.jsx';
+import Spin from '../common/Spin.jsx';
 
 const Main = () => {
   const [sortByCreatedAtClubs, setSortByCreatedAtClubs] = useState([]);
   const [sortByLikesClubs, setsortByLikesClubs] = useState([]);
   const [likedClubs, setLikedClubs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const userId = localStorage.getItem("user_id");
+  const userId = localStorage.getItem('user_id');
   useEffect(() => {
     fetchData();
     setLoading(false);
@@ -22,13 +22,13 @@ const Main = () => {
   const fetchData = async () => {
     try {
       const createdAtRes = await axios.get(
-        process.env.REACT_APP_API_URL + "/clubs",
+        process.env.REACT_APP_API_URL + '/clubs',
         {
           params: {
-            sortBy: "createdAt",
-            tags: "",
-            clubStatus: "",
-            keyword: "",
+            sortBy: 'createdAt',
+            tags: '',
+            clubStatus: '',
+            keyword: '',
             page: 1,
           },
         }
@@ -37,7 +37,7 @@ const Main = () => {
       setSortByCreatedAtClubs(createdAtRes.data.clubList);
       if (userId) {
         const likedClubRes = await axios.get(
-          process.env.REACT_APP_API_URL + "/likedClubs/ids",
+          process.env.REACT_APP_API_URL + '/likedClubs/ids',
           {
             params: {
               userId: userId,
@@ -53,6 +53,8 @@ const Main = () => {
 
   const handleLikedClubs = (clubId) => {
     let index = likedClubs.indexOf(clubId);
+    console.log('likedClubs : ' + likedClubs);
+    console.log('clubId : ' + clubId);
     try {
       if (likedClubs.includes(clubId)) {
         likedClubs.splice(index, 1);
@@ -71,12 +73,12 @@ const Main = () => {
 
   const handleLikePost = async (clubId) => {
     try {
-      await axios.post(process.env.REACT_APP_API_URL + "/likedClubs", {
+      await axios.post(process.env.REACT_APP_API_URL + '/likedClubs', {
         clubId: Number(clubId),
         userId: userId,
       });
     } catch (err) {
-      message.error("이미 좋아요한 모임입니다.");
+      message.error('이미 좋아요한 모임입니다.');
     } finally {
       fetchData();
     }
@@ -84,7 +86,7 @@ const Main = () => {
 
   const handleLikeDelete = async (clubId) => {
     try {
-      axios.delete(process.env.REACT_APP_API_URL + "/likedClubs", {
+      axios.delete(process.env.REACT_APP_API_URL + '/likedClubs', {
         params: { userId: userId, clubId: Number(clubId) },
       });
     } catch (err) {
@@ -135,16 +137,16 @@ const Wrapper = styled.section`
   margin: 0 auto;
   padding-bottom: 60px;
   flex: 1;
-  ${customMedia.lessThan("mobile")`
+  ${customMedia.lessThan('mobile')`
     width: 295px;
   `}
-  ${customMedia.between("mobile", "largeMobile")`
+  ${customMedia.between('mobile', 'largeMobile')`
     width: 363px;
   `}
-  ${customMedia.between("largeMobile", "tablet")`
+  ${customMedia.between('largeMobile', 'tablet')`
     width: 610px;
   `}
-  ${customMedia.between("tablet", "desktop")`
+  ${customMedia.between('tablet', 'desktop')`
     width: 880px;
   `}
 `;
@@ -152,16 +154,16 @@ const Title = styled.div`
   font-weight: bold;
   font-size: 24px;
   margin: 60px 0 40px 0;
-  ${customMedia.lessThan("mobile")`
+  ${customMedia.lessThan('mobile')`
     font-size: 18px;
   `}
-  ${customMedia.between("mobile", "largeMobile")`
+  ${customMedia.between('mobile', 'largeMobile')`
     font-size: 18px;
   `}
-  ${customMedia.between("largeMobile", "tablet")`
+  ${customMedia.between('largeMobile', 'tablet')`
     font-size: 20px;
   `}
-  ${customMedia.between("tablet", "desktop")`
+  ${customMedia.between('tablet', 'desktop')`
     font-size: 22px;
     margin: 50px 0 30px 0;
   `}
@@ -170,18 +172,18 @@ const CardRow = styled.div`
   width: 100%;
   display: flex;
   gap: 24px;
-  ${customMedia.lessThan("mobile")`
+  ${customMedia.lessThan('mobile')`
     flex-wrap: wrap;
   `}
-  ${customMedia.between("mobile", "largeMobile")`
+  ${customMedia.between('mobile', 'largeMobile')`
     flex-wrap: wrap;
     gap: 32px;
   `}
-  ${customMedia.between("largeMobile", "tablet")`
+  ${customMedia.between('largeMobile', 'tablet')`
     flex-wrap: wrap;
     gap: 40px;
   `}
-  ${customMedia.between("tablet", "desktop")`
+  ${customMedia.between('tablet', 'desktop')`
     flex-wrap: wrap;
     gap: 10px;
   `}
@@ -199,16 +201,16 @@ const MainButton = styled(Button)`
   border: 1px solid #029400;
   padding: 10px 20px;
   transition: all 0.3s;
-  ${customMedia.lessThan("mobile")`
+  ${customMedia.lessThan('mobile')`
     font-size: 16px;
   `}
-  ${customMedia.between("mobile", "largeMobile")`
+  ${customMedia.between('mobile', 'largeMobile')`
   font-size: 16px;
   `}
-  ${customMedia.between("largeMobile", "tablet")`
+  ${customMedia.between('largeMobile', 'tablet')`
     font-size: 14px;
   `}
-  ${customMedia.between("tablet", "desktop")`
+  ${customMedia.between('tablet', 'desktop')`
     font-size: 16px;
     margin: 60px 0;
   `}
@@ -223,13 +225,13 @@ const SpinContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  ${customMedia.lessThan("mobile")`
+  ${customMedia.lessThan('mobile')`
     height: 40vh;
   `}
-  ${customMedia.between("mobile", "largeMobile")`
+  ${customMedia.between('mobile', 'largeMobile')`
     height: 40vh;
   `}
-  ${customMedia.between("largeMobile", "tablet")`
+  ${customMedia.between('largeMobile', 'tablet')`
     height: 40vh;
   `}
 `;

@@ -1,9 +1,35 @@
-import styled from "styled-components";
-import { customMedia } from "../../GlobalStyles";
+import styled from 'styled-components';
+import { customMedia } from '../../GlobalStyles';
+import axios from 'axios';
 
-import profile from "../../images/icons/profile.png";
+import profile from '../../images/icons/profile.png';
 
 const PendingMember = (props) => {
+  const getUserEvaluation = async () => {
+    try {
+      const res = await axios.get(
+        process.env.REACT_APP_API_URL + `/users/${props.myPendingMember.userId}`
+      );
+      console.log(res.data);
+      localStorage.setItem('pending_evaluation_good', res.data.goodScore);
+      localStorage.setItem('pending_evaluation_normal', res.data.normalScore);
+      localStorage.setItem('pending_evaluation_bad', res.data.badScore);
+
+      console.log(props.myMember.userId);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  getUserEvaluation();
+
+  const pending_evaluation_good = localStorage.getItem(
+    'pending_evaluation_good'
+  );
+  const pending_evaluation_normal = localStorage.getItem(
+    'pending_evaluation_normal'
+  );
+  const pending_evaluation_bad = localStorage.getItem('pending_evaluation_bad');
+
   return (
     <PendingMemberBar>
       <PendingMemberProfileIcon>
@@ -17,6 +43,14 @@ const PendingMember = (props) => {
         {props.myPendingMember.name}
       </PendingMemberUsername>
       <PendingMemberEmail>{props.myPendingMember.email}</PendingMemberEmail>
+      <PendingMemberEmail>
+        😍
+        {pending_evaluation_good}
+        🙂
+        {pending_evaluation_normal}
+        🙁
+        {pending_evaluation_bad}
+      </PendingMemberEmail>
       <PendingMemberBtn
         onClick={() => props.handleMemberApproval(props.myPendingMember.id)}
       >
@@ -46,19 +80,19 @@ const PendingMemberBar = styled.div`
   display: flex;
   align-items: center;
 
-  ${customMedia.lessThan("mobile")`
+  ${customMedia.lessThan('mobile')`
     width: 295px;
     height: 40px;
   `}
-  ${customMedia.between("mobile", "largeMobile")`
+  ${customMedia.between('mobile', 'largeMobile')`
     width: 363px;
     height: 40px;
   `}
-  ${customMedia.between("largeMobile", "tablet")`
+  ${customMedia.between('largeMobile', 'tablet')`
     width: 610px;
     height: 60px;
   `}
-  ${customMedia.between("tablet", "desktop")`
+  ${customMedia.between('tablet', 'desktop')`
     width: 880px;
     height: 60px;
   `}
@@ -70,25 +104,25 @@ const PendingMemberProfileIcon = styled.div`
   margin-left: 65px;
   margin-right: 15px;
 
-  ${customMedia.lessThan("mobile")`
+  ${customMedia.lessThan('mobile')`
     width: 24px;
     height: 24px;
     margin-left: 10px;
     margin-right: 5px;
   `}
-  ${customMedia.between("mobile", "largeMobile")`
+  ${customMedia.between('mobile', 'largeMobile')`
     width: 24px;
     height: 24px;
     margin-left: 10px;
     margin-right: 5px;
   `}
-  ${customMedia.between("largeMobile", "tablet")`
+  ${customMedia.between('largeMobile', 'tablet')`
     width: 32px;
     height: 32px;
     margin-left: 25px;
     margin-right: 15px;
   `}
-  ${customMedia.between("tablet", "desktop")`
+  ${customMedia.between('tablet', 'desktop')`
     width: 40px;
     height: 40px;
     margin-left: 45px;
@@ -105,18 +139,18 @@ const PendingMemberUsername = styled.div`
   font-size: 20px;
   margin-right: 55px;
 
-  ${customMedia.lessThan("mobile")`
+  ${customMedia.lessThan('mobile')`
     font-size: 10px;
     margin-right: 15px;
   `}
-  ${customMedia.between("mobile", "largeMobile")`
+  ${customMedia.between('mobile', 'largeMobile')`
     font-size: 10px;
     margin-right: 15px;
   `}
-  ${customMedia.between("largeMobile", "tablet")`
+  ${customMedia.between('largeMobile', 'tablet')`
     font-size: 16px;
   `}
-  ${customMedia.between("tablet", "desktop")`
+  ${customMedia.between('tablet', 'desktop')`
     font-size: 18px;
   `}
 `;
@@ -125,22 +159,22 @@ const PendingMemberEmail = styled.div`
   font-size: 20px;
   flex: 1;
 
-  ${customMedia.lessThan("mobile")`
+  ${customMedia.lessThan('mobile')`
     font-size: 10px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   `}
-  ${customMedia.between("mobile", "largeMobile")`
+  ${customMedia.between('mobile', 'largeMobile')`
     font-size: 10px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   `}
-  ${customMedia.between("largeMobile", "tablet")`
+  ${customMedia.between('largeMobile', 'tablet')`
     font-size: 16px;
   `}
-  ${customMedia.between("tablet", "desktop")`
+  ${customMedia.between('tablet', 'desktop')`
     font-size: 18px;
   `}
 `;
@@ -156,22 +190,22 @@ const PendingMemberBtn = styled.button`
   margin-right: 55px;
   cursor: pointer;
 
-  ${customMedia.lessThan("mobile")`
+  ${customMedia.lessThan('mobile')`
     font-size: 8px;
     padding: 2px 5px;
     margin-right: 7px;
   `}
-  ${customMedia.between("mobile", "largeMobile")`
+  ${customMedia.between('mobile', 'largeMobile')`
     font-size: 8px;
     padding: 2px 5px;
     margin-right: 7px;
   `}
-  ${customMedia.between("largeMobile", "tablet")`
+  ${customMedia.between('largeMobile', 'tablet')`
     font-size: 12px;
     padding: 5px 10px;
     margin-right: 15px;
   `}
-  ${customMedia.between("tablet", "desktop")`
+  ${customMedia.between('tablet', 'desktop')`
     font-size: 14px;
     padding: 5px 15px;
     margin-right: 25px;
